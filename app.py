@@ -23,7 +23,7 @@ def upload():
     file.save("static/imagem.jpg")
 
     imagem = abrir_imagem("static/imagem.jpg")
-    objetos, imagem_detectada = detectar(model=modelo, imagem=imagem, classe_objeto='book', class_names=class_names)
+    objetos, imagem_detectada = detectar(model=modelo, imagem=imagem, classe_objeto= "book", class_names=class_names)
    
     cv2.imwrite("static/imagem_detectada.jpg", imagem_detectada)
     saida_tts(objetos)
