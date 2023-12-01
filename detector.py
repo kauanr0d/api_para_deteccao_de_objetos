@@ -25,36 +25,66 @@ def abrir_imagem(caminho_imagem):
     cv2.imwrite("saida.jpg", cv2.cvtColor(imagem, cv2.COLOR_RGB2BGR))
 
     return imagem
-
-def detectar(model, imagem,classe_objeto,class_names):
+def detectar(model, imagem, classe_objeto, class_names):
     conf_threshold = 0.06
     nms_thrreshold = 0.1
-    classes, scores, boxes = model.detect(imagem,conf_threshold,nms_thrreshold)
-    lista_objetos = []
+    classes, scores, boxes = model.detect(imagem, conf_threshold, nms_thrreshold)
     tabela_objetos = {}
+    box_loc = []
 
-    for(classid, score, box) in zip(classes,scores,boxes):
+    for(classid, score, box) in zip(classes, scores, boxes):
         if class_names[int(classid)] == classe_objeto:
-            color = COLORS[int (classid)%len(COLORS)]
+            box_loc = box
+            color = COLORS[int(classid) % len(COLORS)]
             label = f"{class_names[int(classid)]} : {score}"
-            class_name = class_names[int(classid)]    
+            class_name = class_names[int(classid)]
             tabela_objetos[class_name] = class_name
-            cv2.rectangle(imagem,box,color,2)
-            cv2.putText(imagem, label, (box[0], box[1] - 10), cv2.FONT_HERSHEY_SIMPLEX, 0.5, color, 2)
-    
-    
-    return tabela_objetos, imagem
+            posicao = localizacao(imagem, box)
+            cv2.rectangle(imagem, box, color, 2)
+            cv2.putText(imagem, label + " " + posicao, (box[0], box[1] - 10), cv2.FONT_HERSHEY_SIMPLEX, 0.5, color, 2)
 
-def saida_tts(tabela_objetos):
-    frase = "Objetos detectados"
-    fala = gtts.gTTS(frase, lang = "pt-br")
+    
+    saida_tts(tabela_objetos, posicao)
+    return tabela_objetos, imagem, box_loc
+
+def saida_tts(tabela_objetos, posicao):
+    objeto = list(tabela_objetos.keys())[0]
+    frase = f"Objeto {objeto} localizado na parte {posicao}"
+    fala = gtts.gTTS(frase, lang="pt-br")
     fala.save("frase.mp3")
     playsound("frase.mp3")
 
-    for objetos in tabela_objetos:
-        fala = gtts.gTTS(objetos, lang ='pt-br')
-        fala.save("objetos.mp3")
-        playsound("objetos.mp3")
+   # for objeto in tabela_objetos:
+    #    fala = gtts.gTTS(objeto, lang='pt-br')
+     ##  playsound("objetos.mp3")
+
+
+
+def localizacao(imagem, box) -> str:
+    altura, largura, _ = imagem.shape
+    centro_x = largura // 2
+    centro_y = altura // 2
+
+    x, y, w, h = box
+    posicao = ""
+
+    centro_objetox = x + w // 2
+    centro_objetoy = y + h // 2
+
+    if centro_objetox < centro_x and centro_objetoy > centro_y:
+        posicao = "Inferior esquerdo"
+    elif centro_objetox > centro_x and centro_objetoy > centro_y:
+        posicao = "Superior esquerdo"
+    elif centro_objetox > centro_x and centro_objetoy < centro_y:
+        posicao = "Inferior direito"
+    elif centro_objetox > centro_x and centro_objetoy > centro_y:
+        posicao = "Superior direito"
+    else:
+        posicao = "Centro"
+
+    return posicao
+
+
 
 
 #def main():
