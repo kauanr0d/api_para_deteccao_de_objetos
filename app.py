@@ -21,14 +21,15 @@ def upload():
 
     file = request.files['file']
     file.save("static/imagem.jpg")
-
+ 
+    objeto = request.form['objeto']  # Obter o valor do input 'objeto'
     imagem = abrir_imagem("static/imagem.jpg")
-    objetos, imagem_detectada, posicao = detectar(model=modelo, imagem=imagem, classe_objeto= "book", class_names=class_names)
+    objetos, imagem_detectada, posicao = detectar(model=modelo, imagem=imagem, classe_objeto=objeto, class_names=class_names)
    
     cv2.imwrite("static/imagem_detectada.jpg", imagem_detectada)
-    #saida_tts(objetos,posicao)
     
     return render_template('resultado.html', objetos=objetos, imagem='imagem_detectada.jpg')
 
 if __name__ == '__main__':
     app.run(debug=True)
+ 

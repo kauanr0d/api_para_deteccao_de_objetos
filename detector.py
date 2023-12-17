@@ -27,8 +27,8 @@ def abrir_imagem(caminho_imagem):
     return imagem
 def detectar(model, imagem, classe_objeto, class_names):
     conf_threshold = 0.06
-    nms_thrreshold = 0.1
-    classes, scores, boxes = model.detect(imagem, conf_threshold, nms_thrreshold)
+    nms_threshold = 0.1
+    classes, scores, boxes = model.detect(imagem, conf_threshold, nms_threshold)
     tabela_objetos = {}
     box_loc = []
 
@@ -49,14 +49,11 @@ def detectar(model, imagem, classe_objeto, class_names):
 
 def saida_tts(tabela_objetos, posicao):
     objeto = list(tabela_objetos.keys())[0]
-    frase = f"Objeto {objeto} localizado na parte {posicao}"
+    frase = f"Objeto {objeto} localizado no canto {posicao}"
     fala = gtts.gTTS(frase, lang="pt-br")
     fala.save("frase.mp3")
     playsound("frase.mp3")
-
-   # for objeto in tabela_objetos:
-    #    fala = gtts.gTTS(objeto, lang='pt-br')
-     ##  playsound("objetos.mp3")
+ 
 
 
 
@@ -73,11 +70,11 @@ def localizacao(imagem, box) -> str:
 
     if centro_objetox < centro_x and centro_objetoy > centro_y:
         posicao = "Inferior esquerdo"
-    elif centro_objetox > centro_x and centro_objetoy > centro_y:
+    elif centro_objetox < centro_x and centro_objetoy < centro_y:
         posicao = "Superior esquerdo"
-    elif centro_objetox > centro_x and centro_objetoy < centro_y:
-        posicao = "Inferior direito"
     elif centro_objetox > centro_x and centro_objetoy > centro_y:
+        posicao = "Inferior direito"
+    elif centro_objetox > centro_x and centro_objetoy < centro_y:
         posicao = "Superior direito"
     else:
         posicao = "Centro"
@@ -87,25 +84,6 @@ def localizacao(imagem, box) -> str:
 
 
 
-#def main():
- #   class_names = carregar_classes("coco.names")
-
- #   descricao_objeto = "book"
-    
-  #  modelo = iniciar_modelo("yolov4.weights","yolov4.cfg")
-
-   # imagem = abrir_imagem("/home/kauan/Downloads/mesinha2.jpeg")
-
-    #objetos = {}
-    #objetos, imagem = detectar(model= modelo,imagem= imagem,classe_objeto= descricao_objeto,class_names=class_names)
-
-#    saida_tts(objetos)
-
- #   cv2.imshow("deteccoes",imagem)
-  #  cv2.waitKey(0)
-   # cv2.destroyAllWindows()
-
-#if __name__ == "__main__":
- #   main()
     
 
+ 
