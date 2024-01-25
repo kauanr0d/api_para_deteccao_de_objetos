@@ -23,8 +23,8 @@ def abrir_imagem(caminho_imagem):
     imagem = cv2.imread(caminho_imagem)
     ##imagem_rgb = cv2.cvtColor(imagem,cv2.COLOR_BGR2RGB)
     cv2.imwrite("saida.jpg", cv2.cvtColor(imagem, cv2.COLOR_RGB2BGR))
-
     return imagem
+
 def detectar(model, imagem, classe_objeto, class_names):
     conf_threshold = 0.06
     nms_threshold = 0.1
@@ -52,7 +52,7 @@ def saida_tts(tabela_objetos, posicao):
     frase = f"Objeto {objeto} localizado no canto {posicao}"
     fala = gtts.gTTS(frase, lang="pt-br")
     fala.save("frase.mp3")
-    playsound("frase.mp3")
+    #playsound("frase.mp3")
  
 
 

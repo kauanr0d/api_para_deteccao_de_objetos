@@ -10,7 +10,7 @@ caminho_cfg = "yolov4.cfg"
 caminho_weights = "yolov4.weights"
 
 modelo = iniciar_modelo(caminho_cfg,caminho_weights)
-
+ 
 @app.route('/')
 def index():
     return render_template("index.html")
@@ -22,13 +22,19 @@ def upload():
     file = request.files['file']
     file.save("static/imagem.jpg")
  
-    objeto = request.form['objeto']  # Obter o valor do input 'objeto'
+    objeto = request.form['objeto']  # Obter o valor do input objeto
     imagem = abrir_imagem("static/imagem.jpg")
     objetos, imagem_detectada, posicao = detectar(model=modelo, imagem=imagem, classe_objeto=objeto, class_names=class_names)
    
     cv2.imwrite("static/imagem_detectada.jpg", imagem_detectada)
     
     return render_template('resultado.html', objetos=objetos, imagem='imagem_detectada.jpg')
+
+
+@app.route('/play_audio')
+def play_audio():
+    playsound("frase.mp3")
+    
 
 if __name__ == '__main__':
     app.run(debug=True)
