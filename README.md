@@ -7,7 +7,7 @@ SEM AMBIENTE VIRTUAL
 2 - Copie ou insira o arquivo yolov4.weights dentro do diretório deste projeto
 
 3 - Abra seu terminal dentro da pasta do projeto e execute o segundo comando:
-    pip install -r requierements.txt
+    pip install -r requirements.txt
     Caso haja algum problema com a instalação do módulo playsound, utilize o seguinte comando:
     pip install --upgrade setuptools wheel
     
@@ -26,5 +26,5 @@ Siga o passo 1 e 2
     Se estiver usando windowns: .\nomedoseuenv\Scripts\activate
     Se estiver usando linux ou mac: source nomedoseuenv/bin/activate
     
-5 - Com seu ambiente virtual ativado, use o comando: pip install -r requierements.txt e, em seguida, execute o arquivo app.py com python3 app.py
+5 - Com seu ambiente virtual ativado, use o comando: pip install -r requirements.txt e, em seguida, execute o arquivo app.py com python3 app.py
   
