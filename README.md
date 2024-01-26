@@ -11,7 +11,7 @@ SEM AMBIENTE VIRTUAL
 
     pip install -r requirements.txt
     
-    Caso haja algum problema com a instalação do módulo playsound, utilize o seguinte comando:
+Caso haja algum problema com a instalação do módulo playsound, utilize o seguinte comando:
     
     pip install --upgrade setuptools wheel
     
@@ -19,7 +19,7 @@ SEM AMBIENTE VIRTUAL
 
     python3 app.py
     
-    ou
+ou
     
     python app.py
     
@@ -33,11 +33,20 @@ Siga o passo 1 e 2
 
 4 - Ative seu ambiente virtual:
 
-    Se estiver usando windowns: .\nomedoseuenv\Scripts\activate
+Se estiver usando windowns: 
     
-    Se estiver usando linux ou mac: source nomedoseuenv/bin/activate
+    .\nomedoseuenv\Scripts\activate
+    
+Se estiver usando linux ou mac: 
+    
+    source nomedoseuenv/bin/activate
     
 5 - Com seu ambiente virtual ativado, use o comando:
 
-    pip install -r requirements.txt  e, em seguida, execute o arquivo app.py com python3 app.py
+    pip install -r requirements.txt  
+    
+e, em seguida, execute o arquivo app.py com 
+
+    
+    python3 app.py
   
