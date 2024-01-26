@@ -42,7 +42,7 @@ def detectar(model, imagem, classe_objeto, class_names):
             posicao = localizacao(imagem, box)
             cv2.rectangle(imagem, box, color, 2)
             cv2.putText(imagem, label + " " + posicao, (box[0], box[1] - 10), cv2.FONT_HERSHEY_SIMPLEX, 0.5, color, 2)
-
+ 
     
     saida_tts(tabela_objetos, posicao)
     return tabela_objetos, imagem, box_loc
