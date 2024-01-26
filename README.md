@@ -2,6 +2,7 @@
 Para rodar o projeto em sua máquina siga os seguintes passos:
 
 SEM AMBIENTE VIRTUAL
+
 1 - Baixe o arquivo yolov4.weights disponível em: https://github.com/AlexeyAB/darknet/releases/download/darknet_yolo_v3_optimal/yolov4.weights
 
 2 - Copie ou insira o arquivo yolov4.weights dentro do diretório deste projeto
