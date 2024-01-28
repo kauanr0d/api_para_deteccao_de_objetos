@@ -43,9 +43,8 @@ def detectar(model, imagem, classe_objeto, class_names):
             cv2.rectangle(imagem, box, color, 2)
             cv2.putText(imagem, label + " " + posicao, (box[0], box[1] - 10), cv2.FONT_HERSHEY_SIMPLEX, 0.5, color, 2)
  
-    
     saida_tts(tabela_objetos, posicao)
-    return tabela_objetos, imagem, box_loc
+    return tabela_objetos, imagem, box_loc,scores,posicao
 
 def saida_tts(tabela_objetos, posicao):
     objeto = list(tabela_objetos.keys())[0]
