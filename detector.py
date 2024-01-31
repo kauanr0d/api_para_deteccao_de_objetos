@@ -18,7 +18,7 @@ def iniciar_modelo( arquivo_weights,  arquivo_cfg):
     model = cv2.dnn.DetectionModel(net)
     model.setInputParams(size=(608,608),scale = 1/255) #tamanho definido na linha 8 e 9 do arquivo .cfg
     return model
-
+ 
 def abrir_imagem(caminho_imagem):
     imagem = cv2.imread(caminho_imagem)
     ##imagem_rgb = cv2.cvtColor(imagem,cv2.COLOR_BGR2RGB)
@@ -49,12 +49,10 @@ def detectar(model, imagem, classe_objeto, class_names):
 def saida_tts(tabela_objetos, posicao):
     objeto = list(tabela_objetos.keys())[0]
     frase = f"Objeto {objeto} localizado no canto {posicao}"
-    fala = gtts.gTTS(frase, lang="pt-br")
-    fala.save("frase.mp3")
+    audio = gtts.gTTS(frase, lang="pt-br")
+    audio.save("saídaTTS.mp3")
     #playsound("frase.mp3")
  
-
-
 
 def localizacao(imagem, box) -> str:
     altura, largura, _ = imagem.shape
@@ -81,8 +79,3 @@ def localizacao(imagem, box) -> str:
     return posicao
 
 
-
-
-    
-
- 
