@@ -5,16 +5,236 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Detecção de Objetos</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f5f5f5;
+            margin: 0;
+            padding: 0;
+        }
+
+        h1 {
+            color: #333;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .header-container {
+            text-align: center;
+        }
+
+        img {
+            max-width: 100%;
+            height: auto;
+            margin: 0 auto;
+            display: block;
+        }
+
+        form {
+            max-width: 600px;
+            margin: 20px auto;
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        label {
+            display: block;
+            margin: 10px 0 5px;
+            color: #555;
+        }
+
+        input[type="file"] {
+            display: block;
+            margin-bottom: 15px;
+        }
+
+        input[type="text"] {
+            width: 100%;
+            padding: 8px;
+            margin-bottom: 15px;
+            box-sizing: border-box;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+
+        button {
+            background-color: #f70303;
+            color: #fff;
+            padding: 10px 15px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+            margin-right: 10px; 
+        }
+
+        button:hover {
+            background-color: #45a049;
+        }
+
+        ul {
+            list-style-type: none;
+            padding: 0;
+            text-align: left;
+            margin-top: 20px;
+            overflow: auto; 
+            max-height: 200px; 
+            cursor: pointer; 
+        }
+
+        li {
+            font-size: 16px;
+            margin: 5px 0;
+            transition: background-color 0.3s;
+        }
+
+        li:hover {
+            background-color: #eee; 
+
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            justify-content: center;
+            align-items: center;
+        }
+
+        .modal-content {
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            position: relative;
+        }
+
+        .close {
+            cursor: pointer;
+            position: absolute;
+            top: 10px;
+            right: 10px;
+        }
+    </style>
 </head>
 
 <body>
-    <h1>Detecção de Objetos</h1>
+    <div class="header-container">
+        <h1>Detecção de Objetos</h1>
+        <img src="static/Captura de tela de 2024-01-31 20-19-41.png" alt="Captura de tela">
+    </div>
     <form action="/upload" method="post" enctype="multipart/form-data">
-        <input type="file" name="file" accept=".jpg, .jpeg, .png">
+        <label for="file">Escolha uma imagem:</label>
+        <input type="file" id="file" name="file" accept=".jpg, .jpeg, .png">
         <label for="objeto-input">Objeto buscado:</label>
-        <input type="text" id="objeto-input" name="objeto" placeholder="Descreva o objeto:">
-        <button type="submit">Enviar imagem </button>
+        <input type="text" id="objeto-input" name="objeto" placeholder="Descreva o objeto">
+        <button type="submit">Enviar imagem</button>
+        <button type="button" id="openModalButton">Ver Objetos Disponíveis</button>
     </form>
+
+    <div id="myModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal()">&times;</span>
+            <h2>Objetos disponíveis para identificação:</h2>
+            <ul>
+                <li>person</li>
+                <li>bicycle</li>
+                <li>car</li>
+                <li>motorbike</li>
+                <li>aeroplane</li>
+                <li>bus</li>
+                <li>train</li>
+                <li>truck</li>
+                <li>boat</li>
+                <li>traffic light</li>
+                <li>fire hydrant</li>
+                <li>stop sign</li>
+                <li>parking meter</li>
+                <li>bench</li>
+                <li>bird</li>
+                <li>cat</li>
+                <li>dog</li>
+                <li>horse</li>
+                <li>sheep</li>
+                <li>cow</li>
+                <li>elephant</li>
+                <li>bear</li>
+                <li>zebra</li>
+                <li>giraffe</li>
+                <li>backpack</li>
+                <li>umbrella</li>
+                <li>handbag</li>
+                <li>tie</li>
+                <li>suitcase</li>
+                <li>frisbee</li>
+                <li>skis</li>
+                <li>snowboard</li>
+                <li>sports ball</li>
+                <li>kite</li>
+                <li>baseball bat</li>
+                <li>baseball glove</li>
+                <li>skateboard</li>
+                <li>surfboard</li>
+                <li>tennis racket</li>
+                <li>bottle</li>
+                <li>wine glass</li>
+                <li>cup</li>
+                <li>fork</li>
+                <li>knife</li>
+                <li>spoon</li>
+                <li>bowl</li>
+                <li>banana</li>
+                <li>apple</li>
+                <li>sandwich</li>
+                <li>orange</li>
+                <li>broccoli</li>
+                <li>carrot</li>
+                <li>hot dog</li>
+                <li>pizza</li>
+                <li>donut</li>
+                <li>cake</li>
+                <li>chair</li>
+                <li>sofa</li>
+                <li>pottedplant</li>
+                <li>bed</li>
+                <li>diningtable</li>
+                <li>toilet</li>
+                <li>tvmonitor</li>
+                <li>laptop</li>
+                <li>mouse</li>
+                <li>remote</li>
+                <li>keyboard</li>
+                <li>cell phone</li>
+                <li>microwave</li>
+                <li>oven</li>
+                <li>toaster</li>
+                <li>sink</li>
+                <li>refrigerator</li>
+                <li>book</li>
+                <li>clock</li>
+                <li>vase</li>
+                <li>scissors</li>
+                <li>teddy bear</li>
+                <li>hair drier</li>
+                <li>toothbrush</li>
+            </ul>
+        </div>
+    </div>
+
+    <script>
+        function openModal() {
+            document.getElementById('myModal').style.display = 'flex';
+        }
+
+        function closeModal() {
+            document.getElementById('myModal').style.display = 'none';
+        }
+
+        document.getElementById('openModalButton').addEventListener('click', openModal);
+    </script>
 </body>
 
 </html>
