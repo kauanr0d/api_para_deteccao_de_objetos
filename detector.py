@@ -6,7 +6,7 @@ import gtts
 
 COLORS = [(0, 255, 255), (255, 255, 0), (0, 255, 255), (255, 0, 0)]
 
-
+  
 def carregar_classes(nome_arquivo):
     with open(nome_arquivo, 'r') as arquivo:
         class_names = [cname.strip() for cname in arquivo.readlines()]
