@@ -25,6 +25,9 @@ def index():
     return render_template("index.html")
 
 
+ 
+#curl -X POST -F "file=@<caminho_da_imagem>" -F "objeto=<nome_do_objeto>" http://127.0.0.1:5000/detect
+
 @app.route('/detect', methods=['POST'])
 def upload():
 
@@ -34,7 +37,7 @@ def upload():
     if filename != '':
         file_extension = os.path.splitext(filename)[1]
         if file_extension not in app.config['UPLOAD_EXTENSIONS']:
-            abort(415)
+            abort(415) 
 
     file.save("static/imagem.jpg")
 
@@ -62,7 +65,7 @@ def upload():
         'taxa de confianca': round(float(score[0]), 2),
     }
     # render_template('resultado.html', objetos=objetos, imagem='imagem_detectada.jpg')#, retorne isto
-    return make_response(jsonify(response)), renderizar(objetos)
+    return make_response(jsonify(response))#, renderizar(objetos)
 
 
 def renderizar(objetos):
