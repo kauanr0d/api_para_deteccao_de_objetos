@@ -1,4 +1,4 @@
-from flask import Flask, request, render_template, send_from_directory, jsonify, abort, make_response
+from flask import Flask, request, render_template, send_from_directory, jsonify, abort, make_response, send_file
 from werkzeug.utils import secure_filename
 from detector import *
 from classes.DetectorDeObjetos import DetectorDeObjetos
@@ -8,7 +8,7 @@ import os
 
 app = Flask(__name__)
 app.config['MAX_CONTENT_LENGTH'] = 15 * 1000 * 1000
-app.config['UPLOAD_EXTENSIONS'] = ['.jpg', '.png', 'jpeg']
+app.config['UPLOAD_EXTENSIONS'] = ['.jpg', '.png', '.jpeg']
  
 detector = DetectorDeObjetos("yolov4.cfg","yolov4.weights","coco.names")
 class_name = detector.carregar_classes("coco.names")
@@ -30,7 +30,7 @@ def index():
 
 @app.route('/detect', methods=['POST'])
 def upload():
-
+ 
     file = request.files['file']
     filename = secure_filename(file.filename)
 
@@ -44,7 +44,7 @@ def upload():
     objeto = request.form['objeto']  # recebe a descrição do input objeto
 
     if objeto not in class_name:
-        raise ValueError("Descrição do objeto inválida!")
+        make_response(jsonify({'error': 'Descrição do objeto inválida!'}), 400)
 
     imagem = abrir_imagem("static/imagem.jpg")
     objetos, imagem_detectada, box, score, posicao = detectar( model=modelo,
@@ -67,10 +67,11 @@ def upload():
     # render_template('resultado.html', objetos=objetos, imagem='imagem_detectada.jpg')#, retorne isto
     return make_response(jsonify(response))#, renderizar(objetos)
 
-
-def renderizar(objetos):
-    return render_template('resultado.html', objetos=objetos, imagem='imagem_detectada.jpg')
-    
+ 
+@app.route('/display', methods= ['GET'] )
+def renderizar():
+    return send_file("static/imagem_detectada.jpg")
+     
 
 # rota para gerar saída TTS
 @app.route('/play_audio')
@@ -80,3 +81,4 @@ def play_audio():
 
 if __name__ == '__main__':
     app.run(debug=True)
+ 
