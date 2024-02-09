@@ -43,7 +43,7 @@ class DetectorDeObjetos:
     def iniciar_modelo(self):
         net = cv2.dnn.readNet(str(self._caminho_weights), str(self._caminho_cfg))  # Corrigindo o acesso aos caminhos
         model = cv2.dnn_DetectionModel(net)
-        model.setInputParams(size=(608, 608), scale=1 / 255)
+        model.setInputParams(size=(416, 416), scale=1 / 255) # ou 608 
         return model
 
     def detectar_objeto(image_path, object_class):
@@ -65,7 +65,7 @@ class DetectorDeObjetos:
                 })
 
         if objects:
-            object_info = objects[0]  # Consider only the first object found
+            object_info = objects[0] 
             posicao = DetectorDeObjetos.obter_posicao(image, object_info['box'])
             DetectorDeObjetos.gerar_audio(object_class, posicao)
 

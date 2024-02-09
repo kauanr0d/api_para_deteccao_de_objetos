@@ -84,25 +84,28 @@ def upload_video():
     captura = cv2.VideoCapture(url_para_rtsp)
 
     if not captura.isOpened():
-        print('Erro ao abrir o vídeo. Verifique o link RTSP.')
+        print('Erro ao abrir transmissão')
         return
 
     cv2.namedWindow('Video', cv2.WINDOW_NORMAL)
+    box_loc = []
 
-    global class_name1
-
-    while True:
-        frame = captura.read()
+    while True: 
+        ret,frame = captura.read()
 
         conf_threshold = 0.04
         nms_threshold = 0.1
-        classes, scores, boxes = modelo_tiny.detect(frame, conf_threshold, nms_threshold)
 
-        for classid, score, box in zip(classes, scores, boxes):
-            class_name1 = class_name[int(classid)]  # Corrigindo o acesso à variável class_name
-            cv2.rectangle(frame, box, (255, 0, 0), 2)  # Cor da borda: vermelho
-            cv2.putText(frame, f"{class_name1} : {score}", (box[0], box[1] - 10), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (255, 255, 255), 2)  # Cor do texto: branco
-
+        classes, scores, boxes = modelo_tiny.detect(frame,0.01,0.02)
+        for class_id, score, box in zip(classes, scores, boxes):
+            if class_name[int(class_id)] == nome_objeto:
+                color = COLORS[int(class_id) % len(COLORS)]
+                label = f"{class_name[int(class_id)]} : {score}"
+                class_name1 = class_name[int(class_id)]
+                posicao = localizacao(frame, box)
+                cv2.rectangle(frame, box, color, 2)
+                cv2.putText(frame, f"{class_name1} : {score} {posicao}", (box[0], box[1] - 10), cv2.FONT_HERSHEY_SIMPLEX, 0.5, color, 2)
+                
         cv2.imshow('Video', frame)
             
         if cv2.waitKey(1) & 0xFF == ord('q'):
