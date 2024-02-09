@@ -45,11 +45,7 @@
             color: #555;
         }
 
-        input[type="file"] {
-            display: block;
-            margin-bottom: 15px;
-        }
-
+        input[type="file"],
         input[type="text"] {
             width: 100%;
             padding: 8px;
@@ -132,8 +128,18 @@
         <label for="objeto-input">Objeto buscado:</label>
         <input type="text" id="objeto-input" name="objeto" placeholder="Descreva o objeto">
         <button type="submit">Enviar imagem</button>
-        <button type="button" id="openModalButton">Ver Objetos Disponíveis</button>
+         
+        
     </form>
+    <form action="/video_capture" method="post">
+        <label for="endereco-rtsp">Link RTSP:</label>
+        <input type="text" id="endereco-rtsp" name="endereco-rtsp" placeholder="Insira o link RTSP">
+        <button type="submit">Enviar link do RTSP</button>
+        
+        <label for="objeto-input">Objeto buscado:</label>
+        <input type="text" id="objeto-input" name="objeto" placeholder="Descreva o objeto">
+    </form>
+    
 
     <div id="myModal" class="modal">
         <div class="modal-content">

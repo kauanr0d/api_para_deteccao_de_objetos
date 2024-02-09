@@ -5,6 +5,8 @@ from classes.DetectorDeObjetos import DetectorDeObjetos
 import cv2
 import json
 import os
+import threading
+
 
 app = Flask(__name__)
 app.config['MAX_CONTENT_LENGTH'] = 15 * 1000 * 1000
@@ -18,7 +20,8 @@ modelo = detector.iniciar_modelo()
 #caminho_weights = "yolov4.weights"
 
 #modelo = iniciar_modelo(caminho_cfg, caminho_weights)
-
+detector_tiny = DetectorDeObjetos("yolov4-tiny.cfg","yolov4-tiny.weights","coco.names")
+modelo_tiny = detector_tiny.iniciar_modelo()
 
 @app.route('/')
 def index():
@@ -67,11 +70,50 @@ def upload():
     # render_template('resultado.html', objetos=objetos, imagem='imagem_detectada.jpg')#, retorne isto
     return make_response(jsonify(response))#, renderizar(objetos)
 
- 
+  
 @app.route('/display', methods= ['GET'] )
 def renderizar():
     return send_file("static/imagem_detectada.jpg")
-     
+
+
+@app.route('/video_capture', methods=['POST'])
+def upload_video():
+    url_para_rtsp = request.form['endereco-rtsp']
+    nome_objeto = request.form['objeto']
+
+    captura = cv2.VideoCapture(url_para_rtsp)
+
+    if not captura.isOpened():
+        print('Erro ao abrir o vídeo. Verifique o link RTSP.')
+        return
+
+    cv2.namedWindow('Video', cv2.WINDOW_NORMAL)
+
+    global class_name1
+
+    while True:
+        frame = captura.read()
+
+        conf_threshold = 0.04
+        nms_threshold = 0.1
+        classes, scores, boxes = modelo_tiny.detect(frame, conf_threshold, nms_threshold)
+
+        for classid, score, box in zip(classes, scores, boxes):
+            class_name1 = class_name[int(classid)]  # Corrigindo o acesso à variável class_name
+            cv2.rectangle(frame, box, (255, 0, 0), 2)  # Cor da borda: vermelho
+            cv2.putText(frame, f"{class_name1} : {score}", (box[0], box[1] - 10), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (255, 255, 255), 2)  # Cor do texto: branco
+
+        cv2.imshow('Video', frame)
+            
+        if cv2.waitKey(1) & 0xFF == ord('q'):
+                break
+        
+    captura.release()
+    cv2.destroyAllWindows()
+
+    return 'Captura de vídeo encerrada'
+
+
 
 # rota para gerar saída TTS
 @app.route('/play_audio')

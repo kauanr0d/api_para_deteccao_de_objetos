@@ -46,6 +46,24 @@ def detectar(model, imagem, classe_objeto, class_names):
     saida_tts(tabela_objetos, posicao)
     return tabela_objetos, imagem, box_loc,scores,posicao
 
+
+def detectar_video(model, imagem, class_names):
+    conf_threshold = 0.04
+    nms_threshold = 0.1
+    classes, scores, boxes = model.detect(imagem, conf_threshold, nms_threshold)
+
+    for classid, score, box in zip(classes, scores, boxes):
+        class_name = class_names[int(classid)]
+        cv2.rectangle(imagem, box, (255, 0, 0), 2)  # Cor da borda: vermelho
+        cv2.putText(imagem, f"{class_name} : {score}", (box[0], box[1] - 10), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (255, 255, 255), 2)  # Cor do texto: branco
+
+    return imagem
+
+
+
+
+
+
 def saida_tts(tabela_objetos, posicao):
     objeto = list(tabela_objetos.keys())[0]
     frase = f"Objeto {objeto} localizado no canto {posicao}"
